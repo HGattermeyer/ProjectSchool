@@ -1,0 +1,34 @@
+<div class="content mat-elevation-z4">
+  <app-toolbar-title title="Usuário" icon="list">
+    <button mat-icon-button><mat-icon>share</mat-icon></button>
+  </app-toolbar-title>
+  <mat-tab-group animationDuration="0ms" mat-stretch-tabs="false" mat-align-tabs="start">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>person</mat-icon>Profile
+      </ng-template>
+      <div class="container">
+        <app-my-profile></app-my-profile>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>play_lesson</mat-icon>Disciplines
+      </ng-template>
+      <div class="container">
+        <app-my-disciplines></app-my-disciplines>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>workspace_premium</mat-icon>Conquests
+      </ng-template>
+      <div class="container">
+        <app-my-conquests></app-my-conquests>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>
