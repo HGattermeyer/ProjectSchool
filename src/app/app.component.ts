@@ -1,8 +1,9 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
-import { BreakpointObserver } from '@angular/cdk/layout'
-import { fromEvent, map } from 'rxjs';
+import { Component, OnInit, inject } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { filter, fromEvent, map } from 'rxjs';
 import { MenuItem } from './shared/models/shared/menuItem';
 import { menuItems } from './shared/models/shared/menu';
+import { Router, NavigationEnd } from '@angular/router';
 
 export const SCROLL_CONTAINER = 'mat-sidenav-content';
 export const TEXT_LIMIT = 50;
@@ -13,27 +14,40 @@ export const SHADOW_LIMIT = 100;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-
-export class AppComponent implements AfterContentInit, OnInit {
+export class AppComponent implements OnInit {
   public isSmallScreen = false;
   public popText = false;
   public applyShadow = false;
-  public itemsMenu: MenuItem[] = menuItems;
+  public items_menu: MenuItem[] = menuItems;
+  private breakpointObserver: BreakpointObserver;
+  private route: Router;
+  public menuName = '';
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor() {
+    this.breakpointObserver = inject(BreakpointObserver);
+    this.route = inject(Router);
+  }
 
   ngOnInit(): void {
     const content = document.getElementsByClassName(SCROLL_CONTAINER)[0];
 
     fromEvent(content, 'scroll')
       .pipe(map(() => content.scrollTop))
-      .subscribe({
-        next: (value: number) => this.determineHeader(value)
-      })
+      .subscribe((value: number) => this.determineHeader(value))
+
+    this.route.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(event => event as NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      let moduleName = event.url.split('/')[1]
+
+      this.menuName = this.items_menu.filter(
+        (item: MenuItem) => item.link == `/${moduleName}`
+      )[0].label;
+    })
   }
 
   determineHeader(scrollTop: number) {
-    console.log(scrollTop)
     this.popText = scrollTop >= TEXT_LIMIT;
     this.applyShadow = scrollTop >= SHADOW_LIMIT;
   }
@@ -47,5 +61,4 @@ export class AppComponent implements AfterContentInit, OnInit {
   get sidenavMode() {
     return this.isSmallScreen ? 'over' : 'side';
   }
-
 }

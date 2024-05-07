@@ -9,7 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
-    ToolbarTitleComponent
+    ToolbarTitleComponent,
   ],
   imports: [
     CommonModule,
