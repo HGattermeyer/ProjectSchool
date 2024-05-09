@@ -16,12 +16,12 @@
   }
 }
 
-.toolbar-menu {
+mat-toolbar-row {
   position: fixed;
   font-size: 1rem;
   top: 0;
-  z-index: 1001;
   color: white;
+  z-index: 1000;
   height: 64px;
   background-color: #666;
   border-bottom: 1px solid #707070;
